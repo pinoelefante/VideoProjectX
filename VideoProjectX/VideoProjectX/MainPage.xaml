@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:VideoProjectX"
+             x:Class="VideoProjectX.MainPage">
+
+    <TabbedPage.Children>
+        <ContentPage Title="Principale" BindingContext="{Binding Converter={StaticResource ViewModel}, ConverterParameter=MainPageViewModel}">
+            <ContentPage.Resources>
+                <DataTemplate x:Key="DownloadCellTemplate">
+                    <ViewCell>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <!--nome -->
+                                <ColumnDefinition Width="Auto"/>
+                                <!--percentuale -->
+                                <ColumnDefinition Width="Auto"/>
+                                <!-- progresso indici -->
+                                <ColumnDefinition Width="Auto"/>
+                                <!-- reserved -->
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Text="{Binding Filename}" LineBreakMode="TailTruncation"/>
+                            <Label Grid.Column="1">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding CompletePercentage, Mode=OneWay, StringFormat='{0:0.00}'}" />
+                                        <Span Text="%" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Grid.Column="2">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding CurrentLink, Mode=OneWay}" />
+                                        <Span Text="/" />
+                                        <Span Text="{Binding Links.Count}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ContentPage.Resources>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Entry Grid.Column="0" x:Name="urlEntry" />
+                    <Button Grid.Column="1" Text="Download" Command="{Binding DownloadCommand}" CommandParameter="{Binding Source={Reference urlEntry}, Path=Text}" WidthRequest="{OnPlatform GTK=100}" />
+                </Grid>
+
+                <ListView Grid.Row="1" ItemsSource="{Binding DownloadList}" ItemTemplate="{StaticResource DownloadCellTemplate}" />
+
+                <StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="Center">
+                    <Button Text="Remove completed" Command="{Binding RemoveDownloadCompletedCommand}"/>
+                </StackLayout>
+            </Grid>
+        </ContentPage>
+        <ContentPage Title="Opzioni" BindingContext="{Binding Converter={StaticResource ViewModel}, ConverterParameter=SettingsPageViewModel}">
+
+        </ContentPage>
+        <ContentPage Title="About">
+            <Label LineBreakMode="WordWrap">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="VideoProject X è nato come progetto di testing di "/>
+                        <Span Text="Xamarin.Forms WPF - GTK" FontAttributes="Bold" FontSize="Small"/>
+                        <Span Text=" e la creazione di un programma estensibile attraverso l'utilizzo di plugins" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </ContentPage>
+    </TabbedPage.Children>
+
+</TabbedPage>
