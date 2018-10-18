@@ -22,7 +22,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Label Grid.Column="0" Text="{Binding Filename}" LineBreakMode="TailTruncation"/>
-                            <Label Grid.Column="1">
+                            <Label Grid.Column="1" Margin="10,0">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Text="{Binding CompletePercentage, Mode=OneWay, StringFormat='{0:0.00}'}" />
@@ -30,7 +30,7 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Label Grid.Column="2">
+                            <Label Grid.Column="2" Margin="10,0">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Text="{Binding CurrentLink, Mode=OneWay}" />
@@ -66,9 +66,7 @@
                 </StackLayout>
             </Grid>
         </ContentPage>
-        <ContentPage Title="Opzioni" BindingContext="{Binding Converter={StaticResource ViewModel}, ConverterParameter=SettingsPageViewModel}">
-
-        </ContentPage>
+        <local:SettingsPage />
         <ContentPage Title="About">
             <Label LineBreakMode="WordWrap">
                 <Label.FormattedText>

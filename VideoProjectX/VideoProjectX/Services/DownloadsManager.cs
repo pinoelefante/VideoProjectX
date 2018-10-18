@@ -9,6 +9,7 @@ using System.IO;
 using System.Net.Http;
 using System.Diagnostics;
 using System.Net;
+using System.Threading;
 
 namespace VideoProjectX.Services
 {
@@ -126,10 +127,18 @@ namespace VideoProjectX.Services
                     {
                         Debug.WriteLine($"Downloading part {partIndex + 1}/{download.Links.Count} - {filename}");
                         download.CurrentLink = partIndex+1;
-                        var hlsPart = await client.GetByteArrayAsync(download.Links[partIndex]);
-                        if (hls != null)
-                            fileStream.Write(hlsPart, 0, hlsPart.Length);
-                        download.CompletePercentage = ((float)((partIndex + 1) * 100)) / download.Links.Count;
+                        try
+                        {
+                            var hlsPart = await client.GetByteArrayAsync(download.Links[partIndex]);
+                            if (hls != null)
+                                fileStream.Write(hlsPart, 0, hlsPart.Length);
+                            download.CompletePercentage = ((float)((partIndex + 1) * 100)) / download.Links.Count;
+                        }
+                        catch(HttpRequestException e)
+                        {
+                            Debug.WriteLine(e.Message);
+                            partIndex--;
+                        }
                     }
                 }
                 ChangeToMp4(dstFolder, filename, "", false);
@@ -197,9 +206,19 @@ namespace VideoProjectX.Services
                 int retry = 0;
                 do
                 {
-                    remoteContent = await client.GetByteArrayAsync(link);
-                    retry++;
-                } while (remoteContent == null && retry < 5);
+                    try
+                    {
+                        remoteContent = await client.GetByteArrayAsync(link);
+                    }
+                    catch(HttpRequestException e)
+                    {
+                        Debug.WriteLine($"[ERROR] {e.Message} - {link}");
+                        remoteContent = null;
+                        retry++;
+                        Thread.Sleep(500);
+                    }
+                    
+                } while (remoteContent == null && retry <= 2);
                 if (remoteContent == null)
                     continue;
                 using (var fileStream = new FileStream(dstPath, FileMode.Create))

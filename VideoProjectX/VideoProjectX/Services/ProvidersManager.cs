@@ -30,7 +30,7 @@ namespace VideoProjectX.Services
             foreach (var provider in providers_list)
             {
                 if(provider is BaseProvider)
-                    (provider as BaseProvider).MaxVideoWidth = newWidth;
+                    (provider as BaseProvider).MaxVideoWidth = settingsManager.UseMaxQuality ? 2160 : newWidth;
             }
         }
 
@@ -55,7 +55,7 @@ namespace VideoProjectX.Services
                         if (provider is BaseProvider)
                         {
                             Debug.WriteLine("Provider is BaseProvider");
-                            (provider as BaseProvider).MaxVideoWidth = settingsManager.MaxVideoWidth;
+                            (provider as BaseProvider).MaxVideoWidth = settingsManager.UseMaxQuality ? 2160 : settingsManager.MaxVideoWidth;
                         }
                     }
                 }

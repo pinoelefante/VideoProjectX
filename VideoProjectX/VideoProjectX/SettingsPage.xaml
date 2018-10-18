@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VideoProjectX.SettingsPage"
+             Title="Settings"
+             BindingContext="{Binding Converter={StaticResource ViewModel}, ConverterParameter=SettingsPageViewModel}">
+    <Grid Padding="5, 10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Text="Download directory" />
+        <Entry Grid.Row="0" Grid.Column="1" Text="{Binding DownloadDirectory, Mode=TwoWay}" />
+        <Label Grid.Row="1" Grid.Column="0" Text="Video - always use max resolution" />
+        <Switch x:Name="maxQualityBool" Grid.Row="1" Grid.Column="1" IsToggled="{Binding DownloadMaxVideoQuality, Mode=TwoWay}" />
+        <Label Grid.Row="2" Grid.Column="0" Text="Video - preferred resolution" />
+        <Picker Grid.Row="2" Grid.Column="1" SelectedItem="{Binding MaxVideoWidth, Mode=TwoWay}">
+            <Picker.Items>
+                <x:String>2160</x:String>
+                <x:String>1080</x:String>
+                <x:String>720</x:String>
+                <x:String>480</x:String>
+                <x:String>360</x:String>
+                <x:String>240</x:String>
+                <x:String>144</x:String>
+            </Picker.Items>
+            <Picker.Triggers>
+                <DataTrigger TargetType="Picker" Binding="{Binding Source={x:Reference maxQualityBool}, Path=IsToggled}" Value="True">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+                <DataTrigger TargetType="Picker" Binding="{Binding Source={x:Reference maxQualityBool}, Path=IsToggled}" Value="False">
+                    <Setter Property="IsEnabled" Value="True" />
+                </DataTrigger>
+            </Picker.Triggers>
+        </Picker>
+        <StackLayout Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalOptions="Center">
+            <Button Text="Save" Command="{Binding SaveSettingsCommand}" />
+        </StackLayout>
+    </Grid>
+</ContentPage>
