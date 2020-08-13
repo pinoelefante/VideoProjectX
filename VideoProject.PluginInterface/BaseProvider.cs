@@ -29,7 +29,7 @@ namespace VideoProject.Plugins
                 MaxAutomaticRedirections = 2
             };
             httpClient = new HttpClient(handler);
-            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:62.0) Gecko/20100101 Firefox/62.0");
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0) Gecko/20100101 Firefox/77.0");
             httpClient.DefaultRequestHeaders.Add("Accept", "application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
             httpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, br");
         }
@@ -37,7 +37,7 @@ namespace VideoProject.Plugins
         {
             var name = WebUtility.HtmlDecode(origFileName);
             var invalids = Path.GetInvalidPathChars();
-            var newName = String.Join("_", name.Split(invalids, StringSplitOptions.RemoveEmptyEntries));
+            var newName = String.Join("_", name.Replace(Path.DirectorySeparatorChar, '-').Split(invalids, StringSplitOptions.RemoveEmptyEntries));
             return newName;
         }
         protected string MakeValidFilename(string origFileName)

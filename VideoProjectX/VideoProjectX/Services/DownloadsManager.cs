@@ -81,7 +81,7 @@ namespace VideoProjectX.Services
             else
             {
                 var links = new List<string>() { directLink };
-                AddDownload(links, dstFolder);
+                AddDownload(links, dstFolder, filename);
             }
         }
         private bool isDownloading = false;
@@ -194,7 +194,7 @@ namespace VideoProjectX.Services
             {
                 download.CurrentLink = i+1;
                 var link = download.Links[i];
-                var filename = GetFilenameFromUrl(link);
+                var filename = (!String.IsNullOrEmpty(download.Filename) ? download.Filename + " - " : "") + GetFilenameFromUrl(link);
                 var dstPath = Path.Combine(dstFolder, filename);
                 Debug.WriteLine($"Downloading  {i + 1}/{download.Links.Count} - {filename}");
                 if (File.Exists(dstPath))

@@ -20,6 +20,7 @@ namespace VideoProjectX.GTK
             var window = new FormsWindow();
             window.LoadApplication(app);
             window.SetApplicationTitle("Video Project X");
+            window.KeepAbove = true;
             window.Show();
 
             Gtk.Application.Run();

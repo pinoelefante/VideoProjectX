@@ -72,7 +72,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="VideoProject X è nato come progetto di testing di "/>
-                        <Span Text="Xamarin.Forms WPF - GTK" FontAttributes="Bold" FontSize="Small"/>
+                        <Span Text="Xamarin.Forms WPF - GTK" FontAttributes="Bold"/>
                         <Span Text=" e la creazione di un programma estensibile attraverso l'utilizzo di plugins" />
                     </FormattedString>
                 </Label.FormattedText>
