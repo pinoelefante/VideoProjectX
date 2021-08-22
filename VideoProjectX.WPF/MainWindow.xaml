@@ -6,7 +6,7 @@
         xmlns:wpf="clr-namespace:Xamarin.Forms.Platform.WPF;assembly=Xamarin.Forms.Platform.WPF"
         xmlns:local="clr-namespace:VideoProjectX.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="VideoProjectX" Height="450" Width="800">
     <Grid>
         
     </Grid>

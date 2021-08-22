@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:VideoProjectX"
-             x:Class="VideoProjectX.MainPage">
-
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:local="clr-namespace:VideoProjectX"
+            SelectedTabColor="Black"
+            UnselectedTabColor="Gray"
+            x:Class="VideoProjectX.MainPage">
+    
     <TabbedPage.Children>
         <ContentPage Title="Principale" BindingContext="{Binding Converter={StaticResource ViewModel}, ConverterParameter=MainPageViewModel}">
             <ContentPage.Resources>
@@ -79,5 +81,5 @@
             </Label>
         </ContentPage>
     </TabbedPage.Children>
-
+    
 </TabbedPage>
