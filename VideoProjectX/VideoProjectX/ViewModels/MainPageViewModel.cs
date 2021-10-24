@@ -90,18 +90,20 @@ namespace VideoProjectX.ViewModels
                 {
                     try
                     {
-                        var content = await provider.GetDirectLinkAsync(url);
-                        if (string.IsNullOrEmpty(content.DirectLink))
+                        var contents = await provider.GetLinkAsync(url);
+                        if (contents == null || contents.Count == 0)
                         {
                             Debug.WriteLine("broken link");
                             return;
                         }
+                        /*
                         if(content.TypeLink == LinkType.REDIRECT)
                         {
                             DownloadCommand.Execute(content.DirectLink);
                             return;
                         }
-                        downloadManager.AddDownload(content.DirectLink, content.FolderDestination, content.Filename, content.TypeLink == LinkType.HLS);
+                        */
+                        downloadManager.AddDownload(contents);
                     }
                     catch(Exception e)
                     {
@@ -116,7 +118,7 @@ namespace VideoProjectX.ViewModels
             {
                 for(int i=0;i<downloadManager.ListDownloads.Count;)
                 {
-                    if (downloadManager.ListDownloads[i].IsComplete)
+                    if (downloadManager.ListDownloads[i] != null && downloadManager.ListDownloads[i].IsComplete)
                         downloadManager.ListDownloads.RemoveAt(i);
                     else
                         i++;

@@ -7,6 +7,7 @@ using System.Text;
 using VideoProject.Plugins;
 using System.Linq;
 using System.Threading.Tasks;
+using VideoProject.PluginInterface;
 
 namespace VideoProjectX.Services
 {
@@ -79,6 +80,7 @@ namespace VideoProjectX.Services
             return directProvider;
         }
     }
+    
     public class DirectLinkProvider : IProvider
     {
         public bool IsImageProvider => false;
@@ -87,13 +89,13 @@ namespace VideoProjectX.Services
         public IEnumerable<string> Domains => new List<string>(1);
         public string ProviderName => "direct-link";
         public bool HasLogin => false;
-
-        public async Task<(string DirectLink, string FolderDestination, string Filename, LinkType TypeLink)> GetDirectLinkAsync(string url)
+        public async Task<List<LinkData>> GetLinkAsync(string url)
         {
             await Task.CompletedTask;
             var filename = url.Substring(url.LastIndexOf("/") + 1);
             var fileParts = filename.Split(new char[] { '?' }, StringSplitOptions.RemoveEmptyEntries);
-            return (url, "", fileParts[0], LinkType.DIRECT);
+            // return (url, "", fileParts[0], LinkType.DIRECT);
+            return LinkData.CreateAsList(url, "", fileParts[0], LinkType.DIRECT);
         }
 
         public async Task<(List<string> DirectLinks, string FolderDestination, string GalleryName)> GetGalleryLinksAsync(string url)
@@ -102,6 +104,7 @@ namespace VideoProjectX.Services
             return (null, string.Empty, string.Empty);
         }
         public List<string> GetLast100Videos(string baseFolder) => null;
+
         public bool IsGallery(string url) => false;
         public bool IsLogged() => false;
         public void Login() { }

@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Diagnostics;
 using System.Net;
 using System.Threading;
+using VideoProject.PluginInterface;
 
 namespace VideoProjectX.Services
 {
@@ -20,7 +21,6 @@ namespace VideoProjectX.Services
         private HttpClient client;
 
         public ObservableCollection<DownloadWrapper> ListDownloads { get; }
-        public event EventHandler<DownloadWrapper> DownloadAdded;
         public DownloadsManager(SettingsManager s)
         {
             client = new HttpClient();
@@ -61,6 +61,14 @@ namespace VideoProjectX.Services
             });
             
         }
+        public void AddDownload(List<LinkData> linskData)
+        {
+            linskData.ForEach(link => AddDownload(link));
+        }
+        public void AddDownload(LinkData linkData)
+        {
+            AddDownload(linkData.Link, linkData.FolderDestination, linkData.Filename, linkData.TypeLink == VideoProject.Plugins.LinkType.HLS);
+        }
         public void AddDownload(List<string> links, string dstFolder, string filename="", bool isHls = false)
         {
             DownloadWrapper wrapper = new DownloadWrapper()
@@ -71,13 +79,22 @@ namespace VideoProjectX.Services
                 Filename = filename
             };
             ListDownloads.Add(wrapper);
-            DownloadAdded?.Invoke(this, wrapper);
             Download();
         }
         public void AddDownload(string directLink, string dstFolder, string filename="", bool isHls=false)
         {
+
             if (isHls)
+            {
+                var vfn_dot = MakeValidFilename(filename) + ".mp4";
+                var dstPath = Path.Combine(settings.DownloadFolder, dstFolder);
+                if (Directory.GetFiles(dstPath).Where(f => f.Equals(Path.Combine(dstPath, vfn_dot))).Any())
+                {
+                    Debug.WriteLine("File already download: " + vfn_dot);
+                    return;
+                }
                 AddHLS(directLink, dstFolder, filename);
+            }
             else
             {
                 var links = new List<string>() { directLink };
