@@ -88,7 +88,7 @@ namespace VideoProjectX.Services
             {
                 var vfn_dot = MakeValidFilename(filename) + ".mp4";
                 var dstPath = Path.Combine(settings.DownloadFolder, dstFolder);
-                if (Directory.GetFiles(dstPath).Where(f => f.Equals(Path.Combine(dstPath, vfn_dot))).Any())
+                if (Directory.Exists(dstPath) && Directory.GetFiles(dstPath).Where(f => f.Equals(Path.Combine(dstPath, vfn_dot))).Any())
                 {
                     Debug.WriteLine("File already download: " + vfn_dot);
                     return;

@@ -31,6 +31,7 @@ namespace VideoProject.Parsers
                 if (!string.IsNullOrEmpty(playlist.VideoPlaylistLink))
                     playlist.VideoLinks.AddRange(await ParsePlaylistAsync(playlist.VideoPlaylistLink));
             }
+            mPlaylist.RemoveEmptyPlaylists();
             return mPlaylist;
         }
         private M3UMasterPlaylist ParseMasterPlaylist(string content, string baseUrl)
@@ -138,7 +139,12 @@ namespace VideoProject.Parsers
     }
     public class M3UMasterPlaylist
     {
-        public List<M3UPlaylist> Playlists { get; } = new List<M3UPlaylist>();
+        public List<M3UPlaylist> Playlists { get; private set; } = new List<M3UPlaylist>();
+
+        public void RemoveEmptyPlaylists()
+        {
+            Playlists = Playlists.Where(x => x.HasItems).ToList();
+        }
     }
     public class M3UPlaylist
     {
@@ -156,6 +162,7 @@ namespace VideoProject.Parsers
         public List<M3UMediaLink> VideoLinks { get; } = new List<M3UMediaLink>(50);
         public List<M3UMediaItem> AudioList { get; } = new List<M3UMediaItem>();
         public List<M3UMediaItem> SubtitlesList { get; } = new List<M3UMediaItem>();
+        public bool HasItems { get => VideoLinks.Count > 0 || AudioList.Count > 0 || SubtitlesList.Count > 0; } 
     }
     public class M3UMedia
     {

@@ -60,8 +60,14 @@ namespace VideoProject.Parsers
         }
         protected async Task<string> GetContentAsync(string url)
         {
-            var content = await httpClient.GetStringAsync(url);
-            return content;
+            try
+            {
+                var content = await httpClient.GetStringAsync(url);
+                return content;
+            } catch (Exception e)
+            {
+                return null;
+            }
         }
     }
     public class M3UMediaLink
